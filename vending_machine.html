@@ -28,165 +28,165 @@
     </h3>
     <pre>
         import time
-import os
-from colorama import Fore, Back, Style, init
+        import os
+        from colorama import Fore, Back, Style, init
 
-init(autoreset=True)
+        init(autoreset=True)
 
-# Code, Item, Price in dictionary, valid coins in dictionary.
+        # Code, Item, Price in dictionary, valid coins in dictionary.
 
-validCoins = {
-    "1p": 0.01,
-    "2p": 0.02,
-    "5p": 0.05,
-    "10p": 0.1,
-    "20p": 0.2,
-    "50p": 0.5,
-    "£1": 1.0,
-    "£2": 2.0,
-    "£5": 5.0,
-}
+        validCoins = {
+            "1p": 0.01,
+            "2p": 0.02,
+            "5p": 0.05,
+            "10p": 0.1,
+            "20p": 0.2,
+            "50p": 0.5,
+            "£1": 1.0,
+            "£2": 2.0,
+            "£5": 5.0,
+        }
 
-changeCoins = [[5.0, "£5"], [2.0, "£2"], [1.0, "£1"], [0.5, "50p"], [0.2, "20p"], [0.1, "10p"], [0.05, "5p"], [0.02, "2p"], [0.01, "1p"]]
+        changeCoins = [[5.0, "£5"], [2.0, "£2"], [1.0, "£1"], [0.5, "50p"], [0.2, "20p"], [0.1, "10p"], [0.05, "5p"], [0.02, "2p"], [0.01, "1p"]]
 
-itemDictionary = {
-    "A1": ["Plutonium Cube", 1.37],
-    "A2": ["Wax Box", 2.74],
-    "A3": ["Lanyard", 0.52],
-    "B1": ["Slice of Pi", 3.14],
-    "B2": ["Ipwn 27", 0.02],
-    "B3": ["Mneme", 1.0],
-    "C1": ["RMS Titanic", 100.0],
-    "C2": ["Hang Glider", 4.52],
-    "C3": ["Mario Kart DS", 3.20],
-}
+        itemDictionary = {
+            "A1": ["Plutonium Cube", 1.37],
+            "A2": ["Wax Box", 2.74],
+            "A3": ["Lanyard", 0.52],
+            "B1": ["Slice of Pi", 3.14],
+            "B2": ["Ipwn 27", 0.02],
+            "B3": ["Mneme", 1.0],
+            "C1": ["RMS Titanic", 100.0],
+            "C2": ["Hang Glider", 4.52],
+            "C3": ["Mario Kart DS", 3.20],
+        }
 
-credit = 0.00
-
-#Payment function. Resets credit, takes input in coin values, and allows for multiple inputs before continuing and returning credit.
-def payment(persistentCredit):
-    cancelCheck = False
-    if persistentCredit == 0:
         credit = 0.00
-    else:
-        credit = persistentCredit
-    while True:
-        try:
-            print(f"Valid coins are:{Fore.CYAN} 1p, 2p, 5p, 10p, 20p, 50p, £1, £2, £5{Fore.RESET}")
-            print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-            paymentInput = input("\nInput Credit: ").lower()
-            if paymentInput not in validCoins:
-                print("Please input a valid coin value.")
-                os.system("cls")
+
+        #Payment function. Resets credit, takes input in coin values, and allows for multiple inputs before continuing and returning credit.
+        def payment(persistentCredit):
+            cancelCheck = False
+            if persistentCredit == 0:
+                credit = 0.00
             else:
-                credit += validCoins.get(paymentInput)
-                credit = round(credit, 2)
-                print(f"Current credit is £{credit}")
-                endPayment = input(f"\nEnter anything to add more credit, {Fore.RED}'cancel' {Fore.RESET} to exit, or {Fore.RED}'next' {Fore.RESET}to move on. ").lower()
-                if endPayment == "next":
+                credit = persistentCredit
+            while True:
+                try:
+                    print(f"Valid coins are:{Fore.CYAN} 1p, 2p, 5p, 10p, 20p, 50p, £1, £2, £5{Fore.RESET}")
+                    print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
+                    paymentInput = input("\nInput Credit: ").lower()
+                    if paymentInput not in validCoins:
+                        print("Please input a valid coin value.")
+                        os.system("cls")
+                    else:
+                        credit += validCoins.get(paymentInput)
+                        credit = round(credit, 2)
+                        print(f"Current credit is £{credit}")
+                        endPayment = input(f"\nEnter anything to add more credit, {Fore.RED}'cancel' {Fore.RESET} to exit, or {Fore.RED}'next' {Fore.RESET}to move on. ").lower()
+                        if endPayment == "next":
+                            os.system("cls")
+                            return(credit, cancelCheck)
+                            break
+                        if endPayment == "cancel":
+                            os.system("cls")
+                            cancelCheck = True
+                            return(credit, cancelCheck)
+                            break
+                        os.system("cls")
+
+                except:
+                    print("Input a valid coin type.")
+
+        #Item choosing function. Presents items being sold, takes input code, and returns the price of the chosen item.
+        def itemChoice():
+            while True:
+                print(f"""Items for sale:
+            A1- Plutonium Cube {Fore.YELLOW}£1.37    {Fore.RESET} | A2- Wax Box     {Fore.YELLOW}£2.74 {Fore.RESET} | A3- Lanyard       {Fore.YELLOW}£0.52{Fore.RESET}
+            B1- Slice of Pi    {Fore.YELLOW}£3.14 {Fore.RESET}    | B2- Ipwn 27     {Fore.YELLOW}£0.02 {Fore.RESET} | B3- Mneme         {Fore.YELLOW}£1.00{Fore.RESET}
+            C1- RMS Titanic    {Fore.YELLOW}£100.00 {Fore.RESET}  | C2- Hang Glider {Fore.YELLOW}£4.52 {Fore.RESET} | C3- Mario Kart DS {Fore.YELLOW}£3.20{Fore.RESET}""")
+                print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
+                choice = input("\nSelect the code of the item you would like to pick: ")[:2].upper()
+                if choice in itemDictionary:
+                    choicePrice = itemDictionary[choice][1]
+                    choiceName = itemDictionary[choice][0]
+                    print(f"\nThe price for {choiceName} is £{choicePrice}")
                     os.system("cls")
-                    return(credit, cancelCheck)
+                    return(choicePrice)
                     break
-                if endPayment == "cancel":
+                else:
+                    print("Please make a valid selection.")
                     os.system("cls")
-                    cancelCheck = True
-                    return(credit, cancelCheck)
+
+        #Change calculating function.
+        def changeReturn(change):
+            coinsReturned = (f"")
+            originalChange = change
+            if change == 0:
+                print("\nNo Change.")
+            else:
+                for coin in changeCoins:
+                    currentCoinValue = coin[0]
+                    currentCoin = coin[1]
+                    if (change // currentCoinValue) > 0:
+                        coinsReturned = (f"{coinsReturned} [{int(change//currentCoinValue)}] {currentCoin} coins,")
+                        change -= currentCoinValue*(change//currentCoinValue)
+
+                print(f"\nYour change is:{coinsReturned} totalling {originalChange}.")
+            
+
+        #Main function. Takes both above functions and combines them, with smaller subprogram for providing change.
+        def vendingMachine():
+            os.system("cls")
+            choicePrice = 0.00
+            persistentCredit = 0.00
+            credit = 0.00
+
+            print(f"{Fore.BLUE}~| {Fore.MAGENTA}Interdimensional Vending Machine {Fore.BLUE}|~")
+            print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
+            print(f"""Items for sale:
+            A1- Plutonium Cube {Fore.YELLOW}£1.37    {Fore.RESET} | A2- Wax Box     {Fore.YELLOW}£2.74 {Fore.RESET} | A3- Lanyard       {Fore.YELLOW}£0.52{Fore.RESET}
+            B1- Slice of Pi    {Fore.YELLOW}£3.14 {Fore.RESET}    | B2- Ipwn 27     {Fore.YELLOW}£0.02 {Fore.RESET} | B3- Mneme         {Fore.YELLOW}£1.00{Fore.RESET}
+            C1- RMS Titanic    {Fore.YELLOW}£100.00 {Fore.RESET}  | C2- Hang Glider {Fore.YELLOW}£4.52 {Fore.RESET} | C3- Mario Kart DS {Fore.YELLOW}£3.20{Fore.RESET}""")
+            print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
+
+            #Re-runs the payment function if the credit is less than the price of the item, until the credit is enough.
+            while True:
+                credit, cancel = payment(persistentCredit)
+                if cancel == True:
+                    break
+                choicePrice = itemChoice()
+                print(f"The credit you have input is £{credit}")
+                if credit > choicePrice:
                     break
                 os.system("cls")
+                print(f"\nNot enough payment. The price of the item is £{choicePrice}, you have input £{credit}.")
+                persistentCredit = credit
 
-        except:
-            print("Input a valid coin type.")
+            if cancel == False:
+                time.sleep(1)
+                print(f"Item dispensed, change will follow.")
+                time.sleep(1)
 
-#Item choosing function. Presents items being sold, takes input code, and returns the price of the chosen item.
-def itemChoice():
-    while True:
-        print(f"""Items for sale:
-    A1- Plutonium Cube {Fore.YELLOW}£1.37    {Fore.RESET} | A2- Wax Box     {Fore.YELLOW}£2.74 {Fore.RESET} | A3- Lanyard       {Fore.YELLOW}£0.52{Fore.RESET}
-    B1- Slice of Pi    {Fore.YELLOW}£3.14 {Fore.RESET}    | B2- Ipwn 27     {Fore.YELLOW}£0.02 {Fore.RESET} | B3- Mneme         {Fore.YELLOW}£1.00{Fore.RESET}
-    C1- RMS Titanic    {Fore.YELLOW}£100.00 {Fore.RESET}  | C2- Hang Glider {Fore.YELLOW}£4.52 {Fore.RESET} | C3- Mario Kart DS {Fore.YELLOW}£3.20{Fore.RESET}""")
-        print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-        choice = input("\nSelect the code of the item you would like to pick: ")[:2].upper()
-        if choice in itemDictionary:
-            choicePrice = itemDictionary[choice][1]
-            choiceName = itemDictionary[choice][0]
-            print(f"\nThe price for {choiceName} is £{choicePrice}")
-            os.system("cls")
-            return(choicePrice)
-            break
-        else:
-            print("Please make a valid selection.")
-            os.system("cls")
+                change = credit - choicePrice
+                change = round(change, 2)
 
-#Change calculating function.
-def changeReturn(change):
-    coinsReturned = (f"")
-    originalChange = change
-    if change == 0:
-        print("\nNo Change.")
-    else:
-        for coin in changeCoins:
-            currentCoinValue = coin[0]
-            currentCoin = coin[1]
-            if (change // currentCoinValue) > 0:
-                coinsReturned = (f"{coinsReturned} [{int(change//currentCoinValue)}] {currentCoin} coins,")
-                change -= currentCoinValue*(change//currentCoinValue)
+                changeReturn(change)
+        
+                time.sleep(1)
+                print("\nThank you for using the vending machine.")
+                print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
 
-        print(f"\nYour change is:{coinsReturned} totalling {originalChange}.")
-       
+            else:
+                time.sleep(1)
+                print(f"Thank you for using the vending machine, returning credit of £{credit}.")
+                print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
 
-#Main function. Takes both above functions and combines them, with smaller subprogram for providing change.
-def vendingMachine():
-    os.system("cls")
-    choicePrice = 0.00
-    persistentCredit = 0.00
-    credit = 0.00
-
-    print(f"{Fore.BLUE}~| {Fore.MAGENTA}Interdimensional Vending Machine {Fore.BLUE}|~")
-    print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-    print(f"""Items for sale:
-    A1- Plutonium Cube {Fore.YELLOW}£1.37    {Fore.RESET} | A2- Wax Box     {Fore.YELLOW}£2.74 {Fore.RESET} | A3- Lanyard       {Fore.YELLOW}£0.52{Fore.RESET}
-    B1- Slice of Pi    {Fore.YELLOW}£3.14 {Fore.RESET}    | B2- Ipwn 27     {Fore.YELLOW}£0.02 {Fore.RESET} | B3- Mneme         {Fore.YELLOW}£1.00{Fore.RESET}
-    C1- RMS Titanic    {Fore.YELLOW}£100.00 {Fore.RESET}  | C2- Hang Glider {Fore.YELLOW}£4.52 {Fore.RESET} | C3- Mario Kart DS {Fore.YELLOW}£3.20{Fore.RESET}""")
-    print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-
-    #Re-runs the payment function if the credit is less than the price of the item, until the credit is enough.
-    while True:
-        credit, cancel = payment(persistentCredit)
-        if cancel == True:
-            break
-        choicePrice = itemChoice()
-        print(f"The credit you have input is £{credit}")
-        if credit > choicePrice:
-            break
-        os.system("cls")
-        print(f"\nNot enough payment. The price of the item is £{choicePrice}, you have input £{credit}.")
-        persistentCredit = credit
-
-    if cancel == False:
-        time.sleep(1)
-        print(f"Item dispensed, change will follow.")
-        time.sleep(1)
-
-        change = credit - choicePrice
-        change = round(change, 2)
-
-        changeReturn(change)
-   
-        time.sleep(1)
-        print("\nThank you for using the vending machine.")
-        print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-
-    else:
-        time.sleep(1)
-        print(f"Thank you for using the vending machine, returning credit of £{credit}.")
-        print(f"{Fore.GREEN}-----------------------------------------------------------------------------------")
-
-while True:
-    vendingMachine()
-    time.sleep(2.5)
-    endProgram = input(f"\nType {Fore.RED}'exit' {Fore.RESET}to exit the program, or anything to continue. ")[:4].lower()
-    if endProgram == "exit":
-        break
+        while True:
+            vendingMachine()
+            time.sleep(2.5)
+            endProgram = input(f"\nType {Fore.RED}'exit' {Fore.RESET}to exit the program, or anything to continue. ")[:4].lower()
+            if endProgram == "exit":
+                break
     </pre>
 </body>
 </html>
